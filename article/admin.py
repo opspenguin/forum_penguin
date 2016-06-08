@@ -6,5 +6,5 @@ class ArticleAdmin(admin.ModelAdmin):
     search_fields = ["title","status","content"]
     list_filter = ("block",)
 
-#admin.register(Article)
-admin.register(Article,ArticleAdmin)
+#admin.site.register(Article)
+admin.site.register(Article,ArticleAdmin)

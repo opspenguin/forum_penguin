@@ -8,8 +8,11 @@ class Blocks(models.Model):
     desc=models.CharField(u"描述",max_length=200)
     manager=models.ForeignKey(User,verbose_name="管理员")
 
-    create_timestamp=models.DateField(u"创建时间",auto_now_add=True)
-    last_update_timestamp=models.DateField(u"更新时间",auto_now=True)
+    create_timestamp=models.DateTimeField(u"创建时间",auto_now_add=True)
+    last_update_timestamp=models.DateTimeField(u"更新时间",auto_now=True)
+
+    def __unicode__(self):
+        return self.name
 
     class Meta:
         verbose_name="板块"

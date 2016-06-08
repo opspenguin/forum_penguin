@@ -1,27 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>论坛</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-</head>
-<body>
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="jumbotron">
-            <center><h1>论坛</h1></center>
-            </div>
+{% extends "base.html" %}
+{% block content %}
             {% for b in blocks %}
             <div class="panel panel-default">
-                <div class="panel-heading"><a href="#">{{ b.name }}</a><span class="pull-right">管理员:{{ b.manager }}</span></div>
+                <div class="panel-heading"><a href="{% url 'article_list' b.id %}">{{ b.name }}</a><span class="pull-right">管理员:{{ b.manager }}</span></div>
                     <div class="panel-body">
                      {{ b.desc }}
                     </div>
             </div>
             {% endfor %}
-        </div>
-    </div>
-</div>
-</body>
-</html>
+{% endblock %}
