@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
+<div class="row">
+  <div class="col-sm-10">
             {% for b in blocks %}
             <div class="panel panel-default">
                 <div class="panel-heading"><a href="{% url 'article_list' b.id %}">{{ b.name }}</a><span class="pull-right">管理员:{{ b.manager }}</span></div>
@@ -8,4 +10,18 @@
                     </div>
             </div>
             {% endfor %}
+  </div>
+  <div class="col-sm-2">
+    <div class="well">
+    {% if user.is_authenticated %}
+          <p>{{ user.username }}</p>
+          <p>欢迎来到论坛</p>
+          <a href="{% url 'logout_then_login' %}">登出</a>
+    {% else %}
+          <p>您还没有登陆，请<a href="{% url 'login' %}">登录</a></p>
+          <p>还没有帐号？赶紧<a href="{% url 'usercenter_register' %}">注册一个</a></p>
+    {% endif %}
+    </div>
+  </div>
+</div>
 {% endblock %}

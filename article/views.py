@@ -5,6 +5,7 @@ from block.models import Blocks
 from models import Article
 from django.template import RequestContext
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def article_list(request,block_id):
@@ -13,6 +14,7 @@ def article_list(request,block_id):
     articles=Article.objects.filter(block=block).order_by("-last_update_timestamp")
     return render_to_response("articles_list.html",{"articles":articles,"b":block},context_instance=RequestContext(request))
 
+@login_required()
 def article_create(request,block_id):
     block_id=int(block_id)
     block=Blocks.objects.get(id=block_id)

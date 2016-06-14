@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="row">
+    <div class="col-md-12">
+      {% if form.errors %}
+        <div class="alert alert-danger">{{ form.errors }}</div>
+      {% endif %}
+    </div>
+  </div>
+<div class="row">
+        <div class="col-md-3">
+     &nbsp;
+    </div>
+    <div class="col-md-6">
+<form class="form-horizontal" method="post"  action="{% url 'login' %}">
+    {% csrf_token %}
+  <div class="form-group">
+    <label>用户名</label>
+    <div>
+      <input type="text" class="form-control" name="username">
+    </div>
+  </div>
+  <div class="form-group">
+    <label >密码</label>
+    <div>
+      <input type="password" class="form-control" name="password">
+    </div>
+  </div>
+  <div class="form-group">
+    <div>
+      <button type="submit" class="btn btn-default">登陆</button>
+    </div>
+  </div>
+    <input type="hidden" name="next" value="{{ next }}" />
+</form>
+</div>
+        <div class="col-md-3">
+     &nbsp;
+    </div>
+</div>
+{% endblock %}
