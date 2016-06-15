@@ -1,1 +1,3 @@
-__author__ = 'wuhao'
+EMAIL_HOST_USER = "1004020240@qq.com"
+EMAIL_HOST_PASSWORD = qeyjkdgmvkzbbfij
+DEFAULT_FROM_EMAIL = "1004020240@qq.com"
