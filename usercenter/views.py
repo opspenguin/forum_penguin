@@ -9,14 +9,14 @@ from django.core.urlresolvers import reverse
 from django.core.mail import send_mail
 from django.http import HttpResponse
 # Create your views here.
-def register(requst):
-    if requst.method=="GET":
-        return render_to_response("usercenter_register.html",{},context_instance=RequestContext(requst))
+def register(request):
+    if request.method=="GET":
+        return render_to_response("usercenter_register.html",{},context_instance=RequestContext(request))
     else:
-        username=requst.POST['username'].strip()
-        email=requst.POST['email'].strip()
-        password=requst.POST['password'].strip()
-        re_password=requst.POST['re_password'].strip()
+        username=request.POST['username'].strip()
+        email=request.POST['email'].strip()
+        password=request.POST['password'].strip()
+        re_password=request.POST['re_password'].strip()
 
         user=User.objects.create_user(username=username,email=email,password=password)
         user.is_active=False
@@ -28,7 +28,7 @@ def register(requst):
         code_record.save()
 
         activate_link="http://%s%s"%(request.get_host(),reverse("usercenter_activate",args=[new_code]))
-        send_mail(u"激活邮件",u"激活链接为：%s"%(activate_link),'576677381@qq.com',[email],fail_silently=False)
+        send_mail(u"激活邮件",u"激活链接为：%s"%(activate_link),'1004020240@qq.com',[email],fail_silently=False)
 
         return redirect(reverse("login"))
 
@@ -37,7 +37,7 @@ def activate(request,code):
     if query.count()>0:
         code_record=query[0]
         code_record.owner.is_active=True
-        code_record.save()
-        return HttpResponse("激活成功")
+        code_record.owner.save()
+        return HttpResponse(u"激活成功")
     else:
-        return HttpResponse("激活失败")
+        return HttpResponse(u"激活失败")
