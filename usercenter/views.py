@@ -8,6 +8,7 @@ import datetime
 from django.core.urlresolvers import reverse
 from django.core.mail import send_mail
 from django.http import HttpResponse
+from django.contrib import messages
 # Create your views here.
 def register(request):
     if request.method=="GET":
@@ -18,17 +19,27 @@ def register(request):
         password=request.POST['password'].strip()
         re_password=request.POST['re_password'].strip()
 
-        user=User.objects.create_user(username=username,email=email,password=password)
-        user.is_active=False
-        user.save()
+        if not username or not email or not password or not re_password:
+            messages.add_message(request,messages.ERROR,u"任何字段都不能为空")
+            return render_to_response("usercenter_register.html",{},context_instance=RequestContext(request))
+        if password != re_password:
+            messages.add_message(request,messages.ERROR,u"两次密码不同")
+            return render_to_response("usercenter_register.html",{},context_instance=RequestContext(request))
+        if User.objects.filter(username=username).count()>0:
+            messages.add_message(request,messages.ERROR,u"用户已存在")
+            return render_to_response("usercenter_register.html",{},context_instance=RequestContext(request))
+        else:
+            user=User.objects.create_user(username=username,email=email,password=password)
+            user.is_active=False
+            user.save()
 
-        new_code=str(uuid.uuid4()).replace("-","")
-        expire_time=datetime.datetime.now()+datetime.timedelta(days=2)
-        code_record=ActivateCode(owner=user,code=new_code,expire_timestamp=expire_time)
-        code_record.save()
+            new_code=str(uuid.uuid4()).replace("-","")
+            expire_time=datetime.datetime.now()+datetime.timedelta(days=2)
+            code_record=ActivateCode(owner=user,code=new_code,expire_timestamp=expire_time)
+            code_record.save()
 
-        activate_link="http://%s%s"%(request.get_host(),reverse("usercenter_activate",args=[new_code]))
-        send_mail(u"激活邮件",u"激活链接为：%s"%(activate_link),'1004020240@qq.com',[email],fail_silently=False)
+            activate_link="http://%s%s"%(request.get_host(),reverse("usercenter_activate",args=[new_code]))
+            send_mail(u"激活邮件",u"激活链接为：%s"%(activate_link),'1004020240@qq.com',[email],fail_silently=False)
 
         return redirect(reverse("login"))
 

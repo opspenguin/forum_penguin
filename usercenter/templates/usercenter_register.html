@@ -4,6 +4,11 @@
                 <li><a href="{% url 'block_list' %}">首页</a></li>
                 <li class="active">注册</li>
             </ol>
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-danger" role="alert">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
   <div class="row">
     <div class="col-md-12">
       {% if form.errors %}
